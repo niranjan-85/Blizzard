@@ -26,6 +26,7 @@ body{
     margin: 0 auto;
 }
 
+
 .loading{
     height: 100vh;
     text-align: center;
@@ -38,7 +39,7 @@ body{
 }
 
 .meta{
-    width: 30%;
+    width: 100%;
     margin: 10px auto;
     display: flex;
     align-items: center;
@@ -53,15 +54,11 @@ body{
     text-align: center;
 }
 
-.country,.location-name{
+.weather-details,.country,.location-name{
     font-size: 30px;
     font-weight: 300;
 }
 
-.weather-details{
-    font-size: 30px;
-    font-weight: 700;
-}
 
 .temp{
     font-size: 100px;
@@ -74,9 +71,9 @@ body{
 
 
 .wind,.humid{
-    font-weight: bold;
+    font-weight: 300;
     margin-left: 10px;
-    font-size: 20px;
+    font-size: 25px;
 }
 
 
@@ -85,16 +82,10 @@ body{
     .wrapper{
         width: 100%;
     }
-    .meta{
-        width: 50%;
-    }
 }
 
 @media all and (max-width:400px){
     .wrapper{
-        width: 100%;
-    }
-    .meta{
         width: 100%;
     }
 }
