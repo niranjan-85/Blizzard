@@ -19,6 +19,9 @@ Dom_typohum=document.getElementById('typo-hum')
 Dom_typowind=document.getElementById('typo-wind');
 
 var dom = [Dom_insight,Dom_location,Dom_temp,Dom_wind,Dom_humid];
+var forecast=[]
+forecast=forecast.concat(Array.from(document.querySelectorAll('.pred-temp')),Array.from(document.querySelectorAll('.date')));
+
 
 setbackground();
 geolocate();
@@ -28,6 +31,9 @@ geolocate();
 function change(user_color,dom){
     for(var iterator=0;iterator<dom.length;iterator++){
         dom[iterator].style.color=user_color;
+    }
+    for(var iterator=0;iterator<forecast.length;iterator++){
+        forecast[iterator].style.color=user_color;
     }
 }
 
@@ -41,10 +47,20 @@ function setbackground(){
     }
     else if(hours<19 && hours>=16 ){
         document.body.style.backgroundImage="url('/images/evening.jpg')"
+        change('rgb(165, 243, 243)',dom)
     }
     else{
         document.body.style.backgroundImage="url('/images/morning.jpg')"
         change('black',dom);
+    }
+}
+
+function forecastWeather(ForecastArray,domforecast){
+    for(var iterator=0;iterator<ForecastArray.length;iterator++){
+        var fdate=ForecastArray[iterator].date.split("-");
+        domforecast[iterator].children[0].textContent=Number(fdate[2])+1+"/"+fdate[1];
+        domForecast[iterator].children[1].children[0].src=ForecastArray[iterator].day.condition.icon;
+        domforecast[iterator].children[2].textContent=ForecastArray[iterator].day.maxtemp_c+String.fromCharCode(176)+'C';
     }
 }
 
@@ -75,9 +91,9 @@ function geolocate(){
             const resp=await fetch(`/weather/${latitude},${longitude}`)
              .then(res => res.json())
              .then(json => data=json);
-    
+
+             console.log(data)
              // output data 
-             console.log(data);
              city=data.location.name;
              state=data.location.region;
              temperature=data.current.feelslike_c;
@@ -86,6 +102,15 @@ function geolocate(){
              windspeed=data.current.wind_kph;
              isday=data.current.is_day
              
+             // forecast 
+
+             // forecasted weather for 4 days array
+             forecastDays=data.forecast.forecastday;
+
+             // dom elements for forecasted data array
+
+             domForecast=document.getElementById('parent').children;
+             forecastWeather(forecastDays,domForecast);
     
              // injecting into dom  "Weather Condition :- "+:
              document.querySelector('.img').src=data.current.condition.icon;
@@ -101,5 +126,4 @@ function geolocate(){
         })
     }
 }
-
 
