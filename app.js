@@ -16,8 +16,8 @@ app.set('views','./src/views');
 
 // Router and Route definition 
 const routes=require('./src/routes/routes')
-app.get('/home',routes)
-app.post('/home',routes)
+app.get('/',routes)
+app.post('/',routes)
 app.get('/weather/:latitudelongitude',routes)
 
 app.listen(PORT,()=>console.log(`Server running on : ${PORT}`));

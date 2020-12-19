@@ -15,8 +15,6 @@ Dom_location=document.getElementById('loc');
 Dom_temp=document.getElementById('temp')
 Dom_humid=document.getElementById('humid-data')       
 Dom_wind=document.getElementById('wind');
-Dom_typohum=document.getElementById('typo-hum')
-Dom_typowind=document.getElementById('typo-wind');
 
 var dom = [Dom_insight,Dom_location,Dom_temp,Dom_wind,Dom_humid];
 var forecast=[]
@@ -55,10 +53,23 @@ function setbackground(){
     }
 }
 
+// forecast weather 
+
+function weather(data){
+    // forecasted weather for 4 days -> array
+    forecastDays=data.forecast.forecastday;
+
+    // dom elements for forecasted data -> array
+    domForecast=document.getElementById('parent').children;
+    forecastWeather(forecastDays,domForecast);
+}
+
+// inject forecasted weather into dom
+
 function forecastWeather(ForecastArray,domforecast){
     for(var iterator=0;iterator<ForecastArray.length;iterator++){
         var fdate=ForecastArray[iterator].date.split("-");
-        domforecast[iterator].children[0].textContent=Number(fdate[2])+1+"/"+fdate[1];
+        domforecast[iterator].children[0].textContent=fdate[2]+"/"+fdate[1];
         domForecast[iterator].children[1].children[0].src=ForecastArray[iterator].day.condition.icon;
         domforecast[iterator].children[2].textContent=ForecastArray[iterator].day.maxtemp_c+String.fromCharCode(176)+'C';
     }
@@ -73,26 +84,10 @@ function geolocate(){
             latitude=UserLocation.coords.latitude
             longitude=UserLocation.coords.longitude
     
-            // sending lat,lon data 
-            data = {latitude,longitude}
-            const options={
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                method:'POST',
-                body: JSON.stringify(data)
-            }
-            await fetch('/home',options);
-    
-            //Recieving weather data 
-            // api_url=`/weather/${latitude},${longitude}`;
-            // const api_data=await fetch(api_url).then((res)=>{console.log(res.text())});
-    
             const resp=await fetch(`/weather/${latitude},${longitude}`)
              .then(res => res.json())
              .then(json => data=json);
 
-             console.log(data)
              // output data 
              city=data.location.name;
              state=data.location.region;
@@ -102,24 +97,18 @@ function geolocate(){
              windspeed=data.current.wind_kph;
              isday=data.current.is_day
              
-             // forecast 
+             // forecast next 3 days 
 
-             // forecasted weather for 4 days array
-             forecastDays=data.forecast.forecastday;
+             weather(data);
 
-             // dom elements for forecasted data array
-
-             domForecast=document.getElementById('parent').children;
-             forecastWeather(forecastDays,domForecast);
-    
-             // injecting into dom  "Weather Condition :- "+:
+             // injecting into dom :
              document.querySelector('.img').src=data.current.condition.icon;
              Dom_insight.textContent=summury;
              Dom_location.textContent=city+","+state;
              Dom_temp.textContent=temperature+String.fromCharCode(176)+'C';
              Dom_humid.textContent="Humidity :- " + humidity+"%";
              Dom_wind.textContent="Wind Speed :- "+windspeed+" Km/H";
-            
+            console.log(data);
              // dom loaded 
              main_DOM.style.display="block";
              load.style.display="none";
