@@ -1,4 +1,4 @@
-# Blizzad :- Node-Express Weather Application
+# Blizzard :- Node-Express Weather Application
 
 This application makes use of the Geolocation API (client-side) and returns 
 the latitude and the longitude of the user by using their IP address.
