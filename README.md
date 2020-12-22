@@ -19,6 +19,7 @@ Check out the application here : <https://forecas-weather.herokuapp.com/>
 
 ======
 
-
+![](/assets/morningscreenshot.png)
+![](/assets/nightscreenshot.png)
   
  
