@@ -16,7 +16,13 @@ Dom_temp=document.getElementById('temp')
 Dom_humid=document.getElementById('humid-data')       
 Dom_wind=document.getElementById('wind');
 
-var dom = [Dom_insight,Dom_location,Dom_temp,Dom_wind,Dom_humid];
+const error=document.querySelector('.error')
+const errorimg=document.querySelector('.error-image')
+const errormsg=document.querySelector(".error-message");
+const errorsub=document.querySelector('.subtitle')
+
+
+var dom = [Dom_insight,Dom_location,Dom_temp,Dom_wind,Dom_humid,errormsg,errorsub];
 var forecast=[]
 forecast=forecast.concat(Array.from(document.querySelectorAll('.pred-temp')),Array.from(document.querySelectorAll('.date')));
 
@@ -39,7 +45,7 @@ function change(user_color,dom){
 
 function setbackground(){
     var hours=new Date().getHours();
-    if(hours >= 19 || (hours>= 1 && hours<=4)){
+    if(hours >= 19 || (hours>= 0 && hours<=4)){
         document.body.style.backgroundImage="url('/images/night.jpg')";
         change('rgb(165, 243, 243)',dom);
     }
@@ -89,30 +95,43 @@ function geolocate(){
              .then(json => data=json);
 
              // output data 
-             city=data.location.name;
-             state=data.location.region;
-             temperature=data.current.feelslike_c;
-             summury=data.current.condition.text;
-             humidity=data.current.humidity;
-             windspeed=data.current.wind_kph;
-             isday=data.current.is_day
+            city=data.location.name;
+            state=data.location.region;
+            temperature=data.current.feelslike_c;
+            summury=data.current.condition.text;
+            humidity=data.current.humidity;
+            windspeed=data.current.wind_kph;
+            isday=data.current.is_day
              
              // forecast next 3 days 
 
-             weather(data);
+            weather(data);
 
              // injecting into dom :
-             document.querySelector('.img').src=data.current.condition.icon;
-             Dom_insight.textContent=summury;
-             Dom_location.textContent=city+","+state;
-             Dom_temp.textContent=temperature+String.fromCharCode(176)+'C';
-             Dom_humid.textContent="Humidity :- " + humidity+"%";
-             Dom_wind.textContent="Wind Speed :- "+windspeed+" Km/H";
-            console.log(data);
+            document.querySelector('.img').src=data.current.condition.icon;
+            Dom_insight.textContent=summury;
+            Dom_location.textContent=city+","+state;
+            Dom_temp.textContent=temperature+String.fromCharCode(176)+'C';
+            Dom_humid.textContent="Humidity :- " + humidity+"%";
+            Dom_wind.textContent="Wind Speed :- "+windspeed+" Km/H";
              // dom loaded 
-             main_DOM.style.display="block";
-             load.style.display="none";
+            main_DOM.style.display="block";
+            load.style.display="none";
         })
+
+        // location not available
+        navigator.permissions.query({ name: 'geolocation' })
+        .then((resp)=>{
+            if(resp.state != "granted"){
+                load.style.display="none";
+                error.style.display="flex";
+                errorimg.style.display="block";
+                errormsg.style.display="block";
+                errorsub.style.display="block";
+                document.querySelector(".error-image").src="/images/location.png";
+            }
+        })
+
     }
 }
 

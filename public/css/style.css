@@ -81,7 +81,24 @@ body{
     font-size: 25px;
 }
 
+.error{
+    display: flex;
+    height: 100vh;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
+.error-image{
+    display: none;
+    width: 10%;
+}
+
+.subtitle,.error-message{
+    display: none;
+    font-size: 45px;
+}
 
 @media all and (max-width:1277px){
     .wrapper{
