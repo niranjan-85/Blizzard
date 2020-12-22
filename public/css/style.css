@@ -91,7 +91,7 @@ body{
 
 .error-image{
     display: none;
-    width: 10%;
+    width: 200px;
 }
 
 .subtitle,.error-message{
