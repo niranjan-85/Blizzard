@@ -87,6 +87,12 @@ function forecastWeather(ForecastArray,domforecast){
 function geolocate(){
     if('geolocation' in navigator){
         navigator.geolocation.getCurrentPosition(async (UserLocation)=>{
+            error.style.display="none";
+            errorimg.style.display="none";
+            errormsg.style.display="none";
+            errorsub.style.display="none";
+
+
             latitude=UserLocation.coords.latitude
             longitude=UserLocation.coords.longitude
     
